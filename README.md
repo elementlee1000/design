@@ -6,8 +6,9 @@ Static portfolio site rebuilt 1:1 from `Portfolio - Yifan Li.pdf` (15 sheets, 19
 - **Palette** — `#ebebeb` paper, `#454545` title ink, `#000000` body/caption, `#2a56a5` accent (the cover's "2026").
 - **Type** — Courier New for the cover, section dividers and captions' sibling titles; Calibri for body text (Carlito loaded from Google Fonts as the metric-compatible fallback where Calibri is absent).
 - **Images** — extracted at the PDF's native resolution, no downsampling. Photographics are JPEG q90, UI screenshots stay PNG.
-- **Landscape** — in a landscape window the sheet is sized by viewport height (`96vh × 0.768`, still capped at 1000 px), so a whole PDF page sits on screen at once and every coordinate and font scales down with it.
-- **Portrait / short windows** — below 760 px wide *or* 600 px tall the sheets switch from absolute positioning to a single flowing column, capped at `min(560px, 105vh)`, keeping the same type scale and colours.
+- **Every orientation keeps the sheet** — there is no reflow fallback. Because positions are percentages of the sheet and type is `cqw`, the number of characters per line is scale-invariant, so the PDF's exact line breaks reproduce at any size.
+- **Landscape** — the sheet's shape no longer matches the window's, so it is sized by viewport height (`clamp(420px, 96vh × 0.768, 1000px)`) and a whole PDF page sits on screen at once; the leftover width is simply more paper.
+- **Portrait** — the window is already sheet-shaped, so the sheet takes the full width and you scroll.
 - Click any image to open it full size; `Esc` or a click closes.
 
 No build step, no dependencies: `index.html` + `styles.css` + `main.js` + `assets/img/`.

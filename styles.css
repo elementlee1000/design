@@ -10,10 +10,12 @@
   --sheet:0.768;              /* 1920 / 2500 — the sheet's own aspect ratio */
 }
 
-/* Landscape / short windows: shrink the sheet until the whole page is on
-   screen, instead of letting it overflow the viewport. */
+/* Landscape: the sheet's shape no longer matches the window's, so size it
+   by viewport height and let the leftover width become paper margin.
+   Floored at 420px so a very short window scrolls rather than turning the
+   type unreadably small. */
 @media (orientation:landscape){
-  :root{--page-w:min(1000px, calc(96vh * var(--sheet)));}
+  :root{--page-w:clamp(420px, calc(96vh * var(--sheet)), 1000px);}
 }
 
 *,*::before,*::after{box-sizing:border-box}
@@ -161,40 +163,6 @@ body{
   max-width:100%; max-height:100%;
   object-fit:contain;
   box-shadow:0 0 0 1px rgba(69,69,69,.25);
-}
-
-/* ── Narrow or short screens: same sheets, flowed ──────────────────── */
-@media (max-width:760px), (max-height:600px){
-  .page{
-    aspect-ratio:auto;
-    max-width:min(560px, 105vh);
-    padding:48px 24px;
-    display:flex; flex-direction:column;
-  }
-  .divider{min-height:min(78vw, 70vh); justify-content:center}
-
-  .page > *{
-    position:static;
-    left:auto; right:auto; top:auto;
-    width:auto;
-  }
-
-  .mark{font-size:6.4cqw; line-height:.7; align-self:flex-start}
-  .cover-title{font-size:13cqw; line-height:1.1}
-  .cover-sub{font-size:5.6cqw; margin-top:2cqw}
-  .cover-nav{display:flex; flex-direction:column; gap:5cqw; margin-top:9cqw; font-size:5.2cqw; line-height:1}
-  .cover-year{text-align:left; margin-top:9cqw; font-size:5.2cqw}
-
-  .page-title{font-size:5.6cqw; text-align:center; margin-bottom:9cqw}
-  .bio-lede{font-size:4.5cqw; line-height:1.35; margin-bottom:9cqw}
-  .bio-block{width:100%; font-size:4.2cqw; line-height:1.25; margin-bottom:8cqw}
-  .bio-block h3{margin-bottom:4.5cqw}
-  .bio-block p{margin-bottom:4.5cqw}
-  .divider-title,.mail{font-size:5.6cqw}
-  .mail{margin-top:4cqw}
-
-  .ph{width:100% !important; margin-bottom:3cqw}
-  .cap{right:auto; text-align:right; font-size:4.2cqw; margin-top:1cqw}
 }
 
 @media (prefers-reduced-motion:reduce){
