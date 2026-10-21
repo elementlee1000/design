@@ -7,6 +7,13 @@
   --mono:"Courier New",Courier,"Nimbus Mono PS",monospace;
   --sans:Calibri,Carlito,"Segoe UI",system-ui,sans-serif;
   --page-w:1000px;
+  --sheet:0.768;              /* 1920 / 2500 — the sheet's own aspect ratio */
+}
+
+/* Landscape / short windows: shrink the sheet until the whole page is on
+   screen, instead of letting it overflow the viewport. */
+@media (orientation:landscape){
+  :root{--page-w:min(1000px, calc(96vh * var(--sheet)));}
 }
 
 *,*::before,*::after{box-sizing:border-box}
@@ -156,15 +163,15 @@ body{
   box-shadow:0 0 0 1px rgba(69,69,69,.25);
 }
 
-/* ── Portrait / small screens: same sheets, flowed ─────────────────── */
-@media (max-width:760px){
+/* ── Narrow or short screens: same sheets, flowed ──────────────────── */
+@media (max-width:760px), (max-height:600px){
   .page{
     aspect-ratio:auto;
-    max-width:100%;
-    padding:9vw 5.5vw;
+    max-width:min(560px, 105vh);
+    padding:48px 24px;
     display:flex; flex-direction:column;
   }
-  .divider{min-height:78vw; justify-content:center}
+  .divider{min-height:min(78vw, 70vh); justify-content:center}
 
   .page > *{
     position:static;
