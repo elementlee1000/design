@@ -8,6 +8,7 @@
   --sans:Calibri,Carlito,"Segoe UI",system-ui,sans-serif;
   --page-w:1000px;
   --sheet:0.768;              /* 1920 / 2500 — the sheet's own aspect ratio */
+  --sheet-gap:clamp(80px, 18vh, 240px);
 }
 
 /* Landscape: the sheet's shape no longer matches the window's, so size it
@@ -37,11 +38,12 @@ body{
   width:100%;
   max-width:var(--page-w);
   aspect-ratio:1920/2500;
-  margin:0 auto;
+  margin:0 auto var(--sheet-gap);
   overflow:hidden;
   background:var(--paper);
-  scroll-margin-top:0;
+  scroll-margin-top:clamp(16px, 2vh, 40px);
 }
+.page:last-of-type{margin-bottom:0}
 
 /* ── Cover ─────────────────────────────────────────────────────────── */
 .mark{
@@ -164,6 +166,32 @@ body{
   object-fit:contain;
   box-shadow:0 0 0 1px rgba(69,69,69,.25);
 }
+
+/* ── Outline ticks ─────────────────────────────────────────────────── */
+/* Collapsed to bare ticks so the rail never stamps over the sheets;
+   the chapter names ride along only while the rail is hovered. */
+.toc{
+  position:fixed; right:13px; bottom:15px; z-index:9;
+  display:flex; flex-direction:column; align-items:flex-end; gap:6px;
+  font-family:var(--mono); font-size:11px; line-height:1;
+  color:var(--ink);
+  transition:transform .18s ease;
+}
+.toc a{
+  display:flex; align-items:center; gap:8px;
+  padding:5px 0;
+  color:rgba(69,69,69,.55); text-decoration:none;
+}
+.toc span{display:none; padding:1px 4px; background:var(--paper); white-space:nowrap}
+.toc:hover span,.toc:focus-within span{display:block}
+.toc a:hover,.toc a:focus-visible,.toc a.on{color:var(--black)}
+.toc i{position:relative; display:block; width:26px; height:2px}
+.toc i::after{
+  content:""; position:absolute; right:0; top:0;
+  width:10px; height:1px; background:currentColor;
+  transition:width .18s ease, height .18s ease;
+}
+.toc a.on i::after{width:26px; height:2px}
 
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
